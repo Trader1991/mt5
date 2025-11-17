@@ -1,0 +1,157 @@
+/* Reset dasar */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f6f8;
+  color: #333;
+}
+
+/* Container utama */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background-color: #1e2a38;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.sidebar li:hover {
+  background-color: #2e3c4d;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.quick-deposit {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.language {
+  background-color: #0073e6;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Banner */
+.banner {
+  background-color: #eaf4ff;
+  padding: 12px 20px;
+  border-left: 5px solid #0073e6;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Account cards */
+.accounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.account-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 260px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.account-card:hover {
+  transform: translateY(-4px);
+}
+
+.account-card .status {
+  color: green;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.account-card .type {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.account-card .server,
+.account-card .balance,
+.account-card .leverage {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.account-card .actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.account-card button {
+  padding: 8px 14px;
+  background-color: #0073e6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.account-card button:hover {
+  background-color: #005bb5;
+}
