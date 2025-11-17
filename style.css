@@ -1,282 +1,318 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>MT5-Style Mobile UI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    /* Inline fallback if styles.css not used */
-  </style>
-</head>
-<body class="app theme-dark">
+/* styles.css — MT5-like mobile dark theme */
 
-  <!-- Top action bar: SELL / volume / BUY -->
-  <header class="topbar">
-    <button class="btn side sell">
-      <span class="btn-title">SELL</span>
-      <span class="btn-price">0.65081</span>
-    </button>
+:root {
+  --bg: #0d0f12;
+  --panel: #111419;
+  --panel-2: #0f1216;
+  --grid: #1a1f26;
+  --fg: #e6e9ef;
+  --muted: #9aa4b2;
+  --green: #3cc96f;
+  --red: #ff5d5d;
+  --yellow: #ffd166;
+  --blue: #5aa9e6;
+  --outline: #2a323c;
+  --buy: #1db954;
+  --sell: #ff4d4f;
+  --accent: #2f3643;
+}
 
-    <div class="lot">
-      <span class="lot-value">0.01</span>
-    </div>
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  background: var(--bg);
+  color: var(--fg);
+}
 
-    <button class="btn side buy">
-      <span class="btn-title">BUY</span>
-      <span class="btn-price">0.65082</span>
-    </button>
-  </header>
+/* Top action bar */
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: .5rem;
+  align-items: center;
+  padding: .5rem .6rem;
+  background: var(--panel);
+  border-bottom: 1px solid var(--outline);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.btn.side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .15rem;
+  border: none;
+  border-radius: .5rem;
+  padding: .5rem .6rem;
+  font-weight: 600;
+  color: #fff;
+}
+.btn.side.sell { background: linear-gradient(180deg, #ff6b6b, #d64040); }
+.btn.side.buy  { background: linear-gradient(180deg, #27d17d, #179e5c); }
+.btn-title { font-size: .9rem; letter-spacing: .2px; opacity: .95; }
+.btn-price { font-size: .95rem; }
 
-  <!-- Symbol and timeframe bar -->
-  <section class="symbolbar">
-    <div class="pair">
-      <span class="pair-name">AUDUSD</span>
-      <span class="pair-dir down">▼</span>
-      <span class="tf">M15</span>
-    </div>
-    <div class="pair-desc">Australian Dollar vs US Dollar</div>
-  </section>
+.lot {
+  background: var(--panel-2);
+  border: 1px solid var(--outline);
+  border-radius: .6rem;
+  padding: .45rem .8rem;
+  min-width: 64px;
+  text-align: center;
+}
+.lot-value { font-weight: 700; }
 
-  <!-- Tab container with :target routing -->
-  <main class="tabs">
-    <nav class="tabbar">
-      <a class="tablink" href="#quote" id="tab-quote">Quote</a>
-      <a class="tablink active" href="#chart" id="tab-chart">Chart</a>
-      <a class="tablink" href="#trade" id="tab-trade">Trade</a>
-      <a class="tablink" href="#history" id="tab-history">Riwayat</a>
-      <a class="tablink" href="#messages" id="tab-messages">Pesan</a>
-    </nav>
+/* Symbol bar */
+.symbolbar {
+  padding: .6rem .8rem .5rem .8rem;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--outline);
+}
+.pair {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.pair-name { letter-spacing: .3px; }
+.pair-dir.down { color: var(--red); font-weight: 800; }
+.tf {
+  margin-left: .35rem;
+  font-size: .85rem;
+  padding: .1rem .35rem;
+  border: 1px solid var(--outline);
+  border-radius: .35rem;
+  color: var(--muted);
+}
+.pair-desc {
+  margin-top: .25rem;
+  font-size: .8rem;
+  color: var(--muted);
+}
 
-    <!-- Quote screen -->
-    <section class="screen" id="quote">
-      <div class="screen-header">Quote</div>
+/* Tabs */
+.tabs { padding-bottom: 56px; }
+.tabbar {
+  display: none; /* MT5 mobile usually bottom-only. Keep bottomnav fixed. */
+}
 
-      <ul class="quote-list">
-        <!-- XAUUSD -->
-        <li class="quote-row">
-          <div class="left">
-            <div class="symbol">XAUUSD</div>
-            <div class="change neg">-1085 <span class="pct">(-0.27%)</span></div>
-            <div class="time">17:40:18</div>
-          </div>
-          <div class="mid">
-            <div class="bidask">
-              <span class="bid">4073.87</span>
-              <span class="ask">4074.04</span>
-            </div>
-            <div class="lh">L 4049.63 • H 4106.61</div>
-          </div>
-          <div class="right">
-            <button class="mini sell">SELL</button>
-            <button class="mini buy">BUY</button>
-          </div>
-        </li>
+/* Chart wrapper */
+.chart-wrapper {
+  position: relative;
+  height: 56vh;
+  margin: .6rem .6rem 0 .6rem;
+  background: radial-gradient(1200px 600px at 50% -30%, #1a212b 0%, #0d0f12 55%);
+  border: 1px solid var(--outline);
+  border-radius: .6rem;
+  overflow: hidden;
+}
 
-        <!-- AUDUSD -->
-        <li class="quote-row">
-          <div class="left">
-            <div class="symbol">AUDUSD</div>
-            <div class="change neg">-281 <span class="pct">(-0.43%)</span></div>
-            <div class="time">17:40:17</div>
-          </div>
-          <div class="mid">
-            <div class="bidask">
-              <span class="bid">0.65084</span>
-              <span class="ask">0.65085</span>
-            </div>
-            <div class="lh">L 0.65049 • H 0.65373</div>
-          </div>
-          <div class="right">
-            <button class="mini sell">SELL</button>
-            <button class="mini buy">BUY</button>
-          </div>
-        </li>
+/* Price scale */
+.price-scale {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 22px;
+  width: 76px;
+  margin: 0;
+  padding: 6px 6px 6px 0;
+  list-style: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(17,20,25,.6) 50%, rgba(17,20,25,.9) 100%);
+  border-left: 1px solid var(--outline);
+}
+.price-scale li {
+  height: calc((100% - 12px) / 17);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  font-size: .75rem;
+  color: var(--muted);
+}
 
-        <!-- BTCUSD -->
-        <li class="quote-row">
-          <div class="left">
-            <div class="symbol">BTCUSD</div>
-            <div class="change pos">+61451 <span class="pct">(0.66%)</span></div>
-            <div class="time">17:40:18</div>
-          </div>
-          <div class="mid">
-            <div class="bidask">
-              <span class="bid">94044.91</span>
-              <span class="ask">94059.91</span>
-            </div>
-            <div class="lh">L 92902.56 • H 95960.44</div>
-          </div>
-          <div class="right">
-            <button class="mini sell">SELL</button>
-            <button class="mini buy">BUY</button>
-          </div>
-        </li>
+/* Grid lines */
+.chart-grid::before,
+.chart-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.chart-grid {
+  position: absolute;
+  inset: 0 76px 22px 0; /* leave space for price scale + time axis */
+  background-image:
+    linear-gradient(#1d232d 1px, transparent 1px),
+    linear-gradient(90deg, #1d232d 1px, transparent 1px);
+  background-size: 100% 36px, 36px 100%;
+  background-position: top left;
+}
 
-        <!-- EURCAD -->
-        <li class="quote-row">
-          <div class="left">
-            <div class="symbol">EURCAD</div>
-            <div class="change neg">-400 <span class="pct">(-0.25%)</span></div>
-            <div class="time">17:40:17</div>
-          </div>
-          <div class="mid">
-            <div class="bidask">
-              <span class="bid">1.62544</span>
-              <span class="ask">1.62555</span>
-            </div>
-            <div class="lh">L 1.62502 • H 1.63011</div>
-          </div>
-          <div class="right">
-            <button class="mini sell">SELL</button>
-            <button class="mini buy">BUY</button>
-          </div>
-        </li>
+/* Fake candles (CSS only for demo) */
+.candle {
+  --w: 8px;
+  position: absolute;
+  bottom: 0;
+  width: var(--w);
+  transform: translateX(-50%);
+}
+.candle.r { /* body + wick */
+  height: calc(var(--h));
+}
+.candle.r::before { /* wick */
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  top: calc(100% - var(--h));
+  height: var(--h);
+  background: #9aa4b2;
+  opacity: .6;
+}
+.candle.r::after { /* body */
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: var(--w);
+  height: calc(36px + (var(--h) - var(--o)));
+  border-radius: 2px;
+  background: var(--red);
+}
+.candle.up::after { background: var(--buy); }
+.candle.down::after { background: var(--sell); }
+.candle { /* position by percentages: --o (open y), --h (high y) */
+  /* For this mock, interpret --o and --h as relative percentages of chart height */
+}
+.candle { bottom: calc(var(--o)); }
 
-        <!-- GBPJPY -->
-        <li class="quote-row">
-          <div class="left">
-            <div class="symbol">GBPJPY</div>
-            <div class="change pos">+850 <span class="pct">(0.42%)</span></div>
-            <div class="time">17:40:18</div>
-          </div>
-          <div class="mid">
-            <div class="bidask">
-              <span class="bid">204.390</span>
-              <span class="ask">204.399</span>
-            </div>
-            <div class="lh">L 203.135 • H 204.474</div>
-          </div>
-          <div class="right">
-            <button class="mini sell">SELL</button>
-            <button class="mini buy">BUY</button>
-          </div>
-        </li>
+/* Time axis */
+.time-axis {
+  position: absolute;
+  left: 0;
+  right: 76px;
+  bottom: 0;
+  height: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 .4rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(17,20,25,.9) 100%);
+  color: var(--muted);
+  font-size: .75rem;
+  border-top: 1px solid var(--outline);
+}
 
-        <!-- SOLUSD -->
-        <li class="quote-row">
-          <div class="left">
-            <div class="symbol">SOLUSD</div>
-            <div class="change pos">+72 <span class="pct">(0.53%)</span></div>
-            <div class="time">17:40:18</div>
-          </div>
-          <div class="mid">
-            <div class="bidask">
-              <span class="bid">136.90</span>
-              <span class="ask">137.30</span>
-            </div>
-            <div class="lh">L 134.58 • H 142.92</div>
-          </div>
-          <div class="right">
-            <button class="mini sell">SELL</button>
-            <button class="mini buy">BUY</button>
-          </div>
-        </li>
-      </ul>
-    </section>
+/* Price tag bottom-right */
+.price-tag {
+  position: absolute;
+  right: 8px;
+  bottom: 26px;
+  font-size: .78rem;
+  color: var(--fg);
+  background: rgba(17,20,25,.8);
+  border: 1px solid var(--outline);
+  padding: .18rem .4rem;
+  border-radius: .35rem;
+}
 
-    <!-- Chart screen -->
-    <section class="screen active" id="chart">
-      <div class="chart-wrapper">
-        <!-- Price scale on the right -->
-        <ul class="price-scale">
-          <li>0.65497</li>
-          <li>0.65472</li>
-          <li>0.65447</li>
-          <li>0.65422</li>
-          <li>0.65397</li>
-          <li>0.65372</li>
-          <li>0.65347</li>
-          <li>0.65322</li>
-          <li>0.65297</li>
-          <li>0.65272</li>
-          <li>0.65247</li>
-          <li>0.65222</li>
-          <li>0.65197</li>
-          <li>0.65172</li>
-          <li>0.65147</li>
-          <li>0.65122</li>
-          <li>0.65097</li>
-        </ul>
+/* Quote list */
+.screen-header {
+  padding: .6rem .8rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--outline);
+  background: var(--panel);
+}
+.quote-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.quote-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr .9fr;
+  gap: .6rem;
+  align-items: center;
+  padding: .6rem .8rem;
+  border-bottom: 1px solid var(--outline);
+  background: var(--panel-2);
+}
+.quote-row .left .symbol {
+  font-weight: 700; letter-spacing: .2px;
+}
+.quote-row .left .change {
+  margin-top: 2px;
+  font-size: .82rem;
+}
+.quote-row .left .change.pos { color: var(--green); }
+.quote-row .left .change.neg { color: var(--red); }
+.quote-row .left .time {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: .75rem;
+}
+.quote-row .mid .bidask {
+  display: flex; gap: .5rem; align-items: baseline;
+  font-size: .95rem; font-weight: 700;
+}
+.bid { color: var(--fg); }
+.ask { color: var(--fg); opacity: .9; }
+.quote-row .mid .lh {
+  margin-top: 2px; color: var(--muted); font-size: .78rem;
+}
+.quote-row .right {
+  display: flex; gap: .4rem; justify-content: flex-end;
+}
+button.mini {
+  padding: .4rem .6rem;
+  border: none;
+  border-radius: .4rem;
+  font-weight: 700;
+  color: #fff;
+}
+button.mini.sell { background: #d64040; }
+button.mini.buy { background: #179e5c; }
 
-        <!-- Grid + placeholder candles (CSS-only) -->
-        <div class="chart-grid">
-          <!-- Fake candles for visual similarity -->
-          <div class="candle r down" style="left:2%;   --o:40%; --h:55%;"></div>
-          <div class="candle r down" style="left:8%;   --o:45%; --h:60%;"></div>
-          <div class="candle r up"   style="left:14%;  --o:50%; --h:47%;"></div>
-          <div class="candle r down" style="left:20%;  --o:48%; --h:62%;"></div>
-          <div class="candle r down" style="left:26%;  --o:46%; --h:66%;"></div>
-          <div class="candle r up"   style="left:32%;  --o:44%; --h:50%;"></div>
-          <div class="candle r down" style="left:38%;  --o:42%; --h:70%;"></div>
-          <div class="candle r down" style="left:44%;  --o:40%; --h:72%;"></div>
-          <div class="candle r up"   style="left:50%;  --o:39%; --h:64%;"></div>
-          <div class="candle r down" style="left:56%;  --o:38%; --h:75%;"></div>
-          <div class="candle r down" style="left:62%;  --o:36%; --h:78%;"></div>
-          <div class="candle r up"   style="left:68%;  --o:35%; --h:70%;"></div>
-          <div class="candle r down" style="left:74%;  --o:34%; --h:82%;"></div>
-          <div class="candle r down" style="left:80%;  --o:33%; --h:85%;"></div>
-          <div class="candle r down" style="left:86%;  --o:31%; --h:88%;"></div>
-          <div class="candle r down" style="left:92%;  --o:30%; --h:92%;"></div>
-        </div>
+/* Placeholder screens */
+.placeholder {
+  padding: 1rem .8rem;
+  color: var(--muted);
+}
 
-        <!-- Bottom time axis -->
-        <div class="time-axis">
-          <span>14 Nov 16:30</span>
-          <span>17 Nov 04:30</span>
-          <span>17 Nov 16:30</span>
-        </div>
+/* Bottom navigation */
+.bottomnav {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 52px;
+  background: var(--panel);
+  border-top: 1px solid var(--outline);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  z-index: 60;
+}
+.bottomnav .navitem {
+  text-align: center;
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: .85rem;
+  padding-top: .2rem;
+}
+.bottomnav .navitem.active,
+.bottomnav .navitem:focus,
+.bottomnav .navitem:target {
+  color: var(--fg);
+}
 
-        <!-- Current price tag bottom-right -->
-        <div class="price-tag">0.65081 04:46</div>
-      </div>
-    </section>
-
-    <!-- Placeholder screens -->
-    <section class="screen" id="trade">
-      <div class="screen-header">Trade</div>
-      <div class="placeholder">Belum ada posisi terbuka.</div>
-    </section>
-
-    <section class="screen" id="history">
-      <div class="screen-header">Riwayat</div>
-      <div class="placeholder">Riwayat transaksi akan tampil di sini.</div>
-    </section>
-
-    <section class="screen" id="messages">
-      <div class="screen-header">Pesan</div>
-      <div class="placeholder">Tidak ada pesan.</div>
-    </section>
-  </main>
-
-  <!-- Bottom nav (fixed) -->
-  <footer class="bottomnav">
-    <a href="#quote" class="navitem">Quote</a>
-    <a href="#chart" class="navitem active">Chart</a>
-    <a href="#trade" class="navitem">Trade</a>
-    <a href="#history" class="navitem">Riwayat</a>
-    <a href="#messages" class="navitem">Pesan</a>
-  </footer>
-
-  <!-- :target activation without JS -->
-  <style>
-    /* Tab activation purely with CSS */
-    .screen { display: none; }
-    .screen.active { display: block; }
-    :target.screen { display: block; }
-    :target ~ .bottomnav a[href="#chart"] { color: var(--muted); }
-    :target ~ .bottomnav a[href="#quote"]:target,
-    :target ~ .bottomnav a[href="#trade"]:target,
-    :target ~ .bottomnav a[href="#history"]:target,
-    :target ~ .bottomnav a[href="#messages"]:target { color: var(--fg); }
-    /* Highlight active bottomnav via attribute selector */
-    .bottomnav a.navitem[href="#quote"]:hover,
-    .bottomnav a.navitem[href="#chart"]:hover,
-    .bottomnav a.navitem[href="#trade"]:hover,
-    .bottomnav a.navitem[href="#history"]:hover,
-    .bottomnav a.navitem[href="#messages"]:hover { opacity: .8; }
-  </style>
-</body>
-</html>
+/* Responsiveness: mobile-first */
+@media (min-width: 480px) {
+  .chart-wrapper { height: 60vh; }
+}
+@media (min-width: 768px) {
+  .chart-wrapper { height: 64vh; max-width: 640px; margin: .6rem auto 0; }
+}
